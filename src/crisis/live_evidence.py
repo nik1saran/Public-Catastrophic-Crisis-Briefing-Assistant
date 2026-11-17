@@ -159,6 +159,8 @@ def _parse_usgs(run_id: str, source: LiveSource, retrieved_at_utc: str, payload:
 
 def _parse_noaa(run_id: str, source: LiveSource, retrieved_at_utc: str, payload: Any) -> list[dict[str, Any]]:
     features = payload.get("features", []) if isinstance(payload, dict) else []
+    # Drop Test / Exercise / Draft / System messages: only real alerts may reach a briefing.
+    features = [f for f in features if isinstance(f, dict) and f.get("properties", {}).get("status") == "Actual"]
     out = []
     for i, feature in enumerate(features[:8], start=1):
         props = feature.get("properties", {}) if isinstance(feature, dict) else {}
@@ -191,6 +193,12 @@ def _parse_noaa(run_id: str, source: LiveSource, retrieved_at_utc: str, payload:
                     "noaa_urgency": props.get("urgency"),
                     "noaa_instruction": props.get("instruction"),
                     "noaa_sender": props.get("senderName"),
+                    "noaa_headline": props.get("headline"),
+                    "noaa_message_type": props.get("messageType"),
+                    "noaa_ends": props.get("ends"),
+                    "noaa_response": props.get("response"),
+                    "noaa_certainty": props.get("certainty"),
+                    "noaa_status": props.get("status"),
                 },
             )
         )
