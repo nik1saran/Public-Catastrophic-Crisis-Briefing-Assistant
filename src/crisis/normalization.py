@@ -88,13 +88,16 @@ def normalize_record(raw: dict[str, Any]) -> dict[str, Any]:
     if record.get("source_event_id") is not None:
         record["source_event_id"] = str(record.get("source_event_id"))
     record["canonical_event_id"] = _canonical_event_id(record)
-    for key in [
+    impact_fields = [
         "casualties_reported",
         "injuries_reported",
         "missing_reported",
         "displaced_reported",
         "affected_population_reported",
-    ]:
+    ]
+    for key in impact_fields:
         record[key] = safe_int(record.get(key))
+    # Explicit marker so downstream steps can tell "source did not report" from "not checked".
+    record["fields_not_reported"] = [k for k in impact_fields if record[k] is None]
     record["ingestion_key"] = idempotency_key(record)
     return record

@@ -48,6 +48,7 @@
           "conflict_flags": { "type": "array", "items": { "type": "string" } },
           "conflict_details": { "type": "array" },
           "source_metadata": { "type": "object" },
+          "fields_not_reported": { "type": "array", "items": { "type": "string" } },
           "is_active": { "type": "boolean" },
           "active_state_reason": { "type": ["string", "null"] },
           "is_superseded": { "type": "boolean" },

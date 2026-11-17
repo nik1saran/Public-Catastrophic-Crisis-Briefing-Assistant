@@ -97,11 +97,11 @@ def _classify(record: dict[str, Any], confidence: float, has_major_conflict: boo
         return "unverified"
     if tier not in ALLOWED_SOURCE_TIERS:
         return "unverified"
+    if record.get("is_active") is False:
+        return "unverified"
     if has_major_conflict:
         return "preliminary" if confidence >= THRESHOLDS.preliminary_min else "unverified"
     if tier == "tier_c":
-        return "unverified"
-    if record.get("is_active") is False:
         return "unverified"
     if confidence >= THRESHOLDS.confirmed_min:
         return "confirmed"
@@ -171,7 +171,7 @@ def verify_records(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
             confidence = round(_score(r, corroboration_count, has_major_conflict), 2)
             is_active = not is_expired and not is_revised and not is_stale
-            status = _classify(r, confidence, has_major_conflict)
+            status = _classify({**r, "is_active": is_active}, confidence, has_major_conflict)
 
             out = dict(r)
             out["confidence_score"] = confidence
