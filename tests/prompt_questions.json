@@ -1,0 +1,10 @@
+[
+  {"question": "What weather alerts are currently active?", "expect_answerable": true},
+  {"question": "What earthquake activity has been reported?", "expect_answerable": true},
+  {"question": "Which counties are covered by the FEMA disaster declaration?", "expect_answerable": true},
+  {"question": "What safety advice do the active alerts give?", "expect_answerable": true},
+  {"question": "Are there any evacuation or shelter-in-place orders?", "expect_answerable": false},
+  {"template": "casualties", "expect_answerable": false},
+  {"question": "How many people have been evacuated?", "expect_answerable": false},
+  {"question": "Who ordered the evacuation, and when will it be lifted?", "expect_answerable": false}
+]

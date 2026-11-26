@@ -24,6 +24,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install dependencies
+        run: pip install "anthropic>=1.16.0"
+      - name: Run briefing unit tests
+        run: python -m unittest tests.test_briefing
       - name: Run validation
         run: python tests/run_validation.py
       - name: Validate schema
